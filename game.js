@@ -38,8 +38,6 @@ class Vector {
  	}
 }
 
-
-
 class Actor {
 	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
 		var position = instanceofVector(pos);
@@ -47,126 +45,41 @@ class Actor {
 		this.pos = position;
 		this.size = sizeFinal;
 		this.speed = instanceofVector(speed);
-
-		// Object.defineProperty(this, 'type', {
-		//   value : 'actor',
-		//   writable : false
-		// });
-
-		// this.type = "actor";
-		// this.act = function() {};
-		this.left = position.x;
-		this.right = position.x + sizeFinal.x;
-		this.top = position.y;
-		this.bottom = position.y + sizeFinal.y;
   	}
 	get type () {return 'actor'};
+	get left () {return this.pos.x};
+	get right () {return this.pos.x + this.size.x};
+	get top () {return this.pos.y};
+	get bottom () {return this.pos.y + this.size.y};
+
   	isIntersect (obj) {
   		instanceofActor(obj);
-  		// console.log('');
-  		// console.log(i);
-  		// console.log('this');
-  		// console.log(this);
-  		// console.log(`top: ${this.top}; left: ${this.left}; bottom: ${this.bottom}; right: ${this.right}; SIZE: x: ${this.size.x}; y: ${this.size.y};`);
-  		// console.log('obj');
-  		// console.log(obj);
-  		// console.log(`top: ${obj.top}; left: ${obj.left}; bottom: ${obj.bottom}; right: ${obj.right}; SIZE: x: ${obj.size.x}; y: ${obj.size.y};`);
-  		// i++;
+  			console.log('');
+			console.log(op);
+			console.log('this');
+			console.log(`top: ${this.top}; bottom: ${this.bottom}; left: ${this.left}; right: ${this.right}`);
+			console.log('obj');
+			console.log(`top: ${obj.top}; bottom: ${obj.bottom}; left: ${obj.left}; right: ${obj.right}`);
+		op++;
   		if (this == obj) {
   			// console.log('сам с собой'); 
   			return false};
-  		if (obj.size.x < 0 && obj.size.y <0) {
-  			// console.log('false');
-  			return false;}
-  		if ( 
-  			((this.top < obj.top) && 
-   			(this.right > obj.right) && 
-   			(this.bottom > obj.bottom) && 
-   			(this.left < obj.left))
-  			) {
-  		// console.log('true');
-  		return true;
-  		} else if (
+
+  		if ((obj.size.x < 0 && obj.size.y <0) ||
   			((this.top >= obj.bottom) || 
   			(this.right <= obj.left) || 
   			(this.bottom <= obj.top) || 
-  			(this.left >= obj.right)) ||
-  			((this.top == obj.top) || 
-   			(this.right == obj.right) || 
-   			(this.bottom == obj.bottom) || 
-   			(this.left == obj.left))
-
-   			) {
-			if ((this.size.x == obj.size.x && this.size.y == obj.size.y) &&
-				(this.left < obj.right && this.right > obj.left)
-				) {
-				// console.log('true');
-			return true;
-				}
-			// console.log('false');
-			return false;
-		} else if (this.top > obj.top && this.right > obj.right && this.bottom > obj.bottom && this.left > obj.left) {
-			// console.log('true');
-			return true;
-			}
-
-
-  	// 	// Объект не пересекается с объектом расположенным очень далеко
-  	// 	if (((this.top != obj.top) && 
-  	// 	  	 (this.right != obj.right) && 
-  	// 	  	 (this.bottom != obj.bottom) && 
-  	// 	  	 (this.left != obj.left)) && 
-			// (!(this.top < obj.bottom && this.left < obj.right) ||
-			//  !(this.top < obj.bottom && this.right > obj.left) ||
-			//  !(this.bottom > obj.top && this.right > obj.left) ||
-			//  !(this.bottom > obj.top && this.left < obj.right)) ||
-			// ((this.top == obj.bottom) || 
-  	// 		 (this.right == obj.left) || 
-  	// 		 (this.bottom == obj.top) || 
-  	// 		 (this.left == obj.right)) ||
-			// ((this.top == obj.top) || 
-   // 			 (this.right == obj.right) || 
-   // 			 (this.bottom == obj.bottom) || 
-   // 			 (this.left == obj.left))
-			// ) {console.log('расположенным очень далеко'); return false}
-
-  		// Объект не пересекается с объектом со смежными границами
-  	// 	 if (((this.top == obj.bottom) || 
-			// (this.right == obj.left) || 
-			// (this.bottom == obj.top) || 
-			// (this.left == obj.right)) 
-			// ||
-   // 			((this.top == obj.top) || 
-   // 			(this.right == obj.right) || 
-   // 			(this.bottom == obj.bottom) || 
-   // 			(this.left == obj.left))
-   // 			) {console.log('со смежными границами'); return false} 
-
-  		// Объект не пересекается с объектом расположенным в той же точке, но имеющим отрицательный вектор размера
-  // 		else if (((this.top == obj.top) || 
-  // 		  	(this.right == obj.right) || 
-  // 		  	(this.bottom == obj.bottom) || 
-  // 		  	(this.left == obj.left)) && 
-  // 			(obj.size.x < 0 && obj.size.y <0)) {console.log('c отрицательным размером'); return false}
-
-  // 		// Объект пересекается с объектом, который полностью содержится в нём
-  		// else if ((this.top < obj.top && 
-  		//   			this.right > obj.right && 
-  		//   			this.bottom > obj.bottom && 
-  		//   			this.left < obj.left) ||
-  		// 		(this.top < obj.bottom && this.left < obj.right) ||
-				// 	 (this.top < obj.bottom && this.right > obj.left) ||
-				// 	 (this.bottom > obj.top && this.right > obj.left) ||
-				// 	 (this.bottom > obj.top && this.left < obj.right)
-  		// 	) {console.log('полностью содержится в нём'); return true}
-
-  // 		// Объект пересекается с объектом, который частично содержится в нём
-		// else if (((this.top < obj.bottom && this.left < obj.right) ||
-		// 			 (this.top < obj.bottom && this.right > obj.left) ||
-		// 			 (this.bottom > obj.top && this.right > obj.left) ||
-		// 			 (this.bottom > obj.top && this.left < obj.right))) {console.log('частично содержится в нём'); return true}; 
-
-
+  			(this.left >= obj.right))) {
+  			console.log('false');
+  			return false;
+  		} else if(((this.top <= obj.top) || 
+  			(this.right >= obj.right) || 
+  			(this.bottom >= obj.bottom) || 
+  			(this.left <= obj.left))) {
+  			console.log('true');
+  			return true;
+  		}
+  			console.log('нет таких условий пересечения');
   	}
   	act () {}
 }
@@ -457,7 +370,7 @@ class LevelParser  {
 }
 
 class Fireball extends Actor {
-	constructor(pos = new Vector(0, 0), speed = new Vector(0, 0)) {
+	constructor(pos, speed = new Vector(0, 0)) {
 		super(pos);
 		this.speed = speed;
 	}
@@ -590,6 +503,7 @@ class Player extends Actor {
 		this.pos.y -= 0.5;
   	}
   	get type () {return 'player'}
+  	// get size () {return new Vector(0.8, 1.5);}
   	// set type () {return 'player'}
 }
 
@@ -597,12 +511,13 @@ class Player extends Actor {
 
 const schemas = [
   [
+    '        v',
     '         ',
     '         ',
-    '    =    ',
+    '         ',
     '       o ',
     '     !xxx',
-    ' @       ',
+    '     =   ',
     'xxx!     ',
     '         '
   ],
@@ -619,8 +534,61 @@ const schemas = [
 ];
 const actorDict = {
   '@': Player,
-  'v': FireRain
+  'v': FireRain,
+  '=': HorizontalFireball,
+  'o': Coin
 }
 const parser = new LevelParser(actorDict);
 runGame(schemas, parser, DOMDisplay)
   .then(() => console.log('Вы выиграли приз!'));
+
+// const schema = [
+//   '         ',
+//   '    =   v',
+//   '    |    ',
+//   '       o ',
+//   '     !xxx',
+//   '         ',
+//   'xxx!     ',
+//   '         '
+// ];
+// const actorDict = {
+//   '@': Player,
+//   'v': FireRain,
+//   '=': HorizontalFireball,
+//   '|': VerticalFireball,
+//   'o': Coin
+// }
+// const parser = new LevelParser(actorDict);
+// const level = parser.parse(schema);
+// runLevel(level, DOMDisplay);
+
+
+// const items = new Map();
+// const player = new Actor();
+// items.set('Игрок', player);
+// items.set('Первая монета', new Actor(new Vector(10, 10)));
+// items.set('Вторая монета', new Actor(new Vector(15, 5)));
+
+// function position(item) {
+//   return ['left', 'top', 'right', 'bottom']
+//     .map(side => `${side}: ${item[side]}`)
+//     .join(', ');  
+// }
+
+// function movePlayer(x, y) {
+//   player.pos = player.pos.plus(new Vector(x, y));
+// }
+
+// function status(item, title) {
+//   console.log(`${title}: ${position(item)}`);
+//   if (player.isIntersect(item)) {
+//     console.log(`Игрок подобрал ${title}`);
+//   }
+// }
+
+// items.forEach(status);
+// movePlayer(10, 10);
+// items.forEach(status);
+// movePlayer(5, -5);
+// items.forEach(status);
