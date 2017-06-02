@@ -148,9 +148,9 @@ class Level {
 			this.actors.map(function(elem, i) {
 				elem.type == obj.type && elem.title == obj.title ? findMass.push(i) : '';
 			});
-			for (var i = 0; i < findMass.length; i++) {
-				this.actors.splice(findMass[i], 1);
-			}
+			findMass.map(function(elem, i) {
+				this.actors.splice(elem, 1);
+			})
 	}
 	noMoreActors (type) {
 		var find = 0;
@@ -177,14 +177,7 @@ class LevelParser  {
 			// console.log(this.data);
 			for (var key in this.data) {
 				if (key == symbol) {return this.data[key]}
-				// console.log(key);
-				// if (item[z] == key) {
-				// 	forReturn.push(new data[item[z]](new Vector(z,i)));
-				// }
 			}
-			// this.data.forEach(function (item, key) {
-			// 	console.log(key);
-			// });
 		}
 	}
 	obstacleFromSymbol (symbol) {
@@ -199,23 +192,21 @@ class LevelParser  {
 		if (plan.length == 0) {
 			return [];
 		} else {
-			for (var i = 0; i < plan.length; i++) {
-				// console.log(plan[i]);
+			console.log(plan);
+			plan.map(function(line, y) {
 				forReturn.push([]);
-				for (var z = 0; z < plan[i].length; z++) {
-					// console.log(plan[i][z]);
-					if (plan[i][z] == 'x') {
-						// console.log(plan[i][z] + '=wall');
-						forReturn[i].push('wall');
-					} else if (plan[i][z] == '!') {
-						// console.log(plan[i][z] + '=lava');
-						forReturn[i].push('lava');
+				for (var x = 0; x < line.length; x++) {
+					if (line[x] == 'x') {
+						forReturn[y].push('wall');
+					} else if (line[x] == '!') {
+						forReturn[y].push('lava');
 					} else {
-						forReturn[i].push(undefined);
+						forReturn[y].push(undefined);
 					}
 				}
-			}
-		// console.log(forReturn);
+			});
+			// console.log(forReturn);
+
 			return forReturn;
 		}
 	}
@@ -240,13 +231,9 @@ class LevelParser  {
 
 	}
 	parse (plan) {
-		// console.log('');
-		// console.log(this);
-		// console.log(plan);
-		var asd = new Level(plan, this.createActors(plan));
-		// console.log(asd);
-		asd.grid = this.createGrid(asd.grid);
-		return asd;
+		var level = new Level(plan, this.createActors(plan));
+		level.grid = this.createGrid(level.grid);
+		return level;
 	}
 }
 
@@ -273,37 +260,8 @@ class Fireball extends Actor {
 		this.speed.x *= -1;
 		this.speed.y *= -1;
 	}
-	act (time, level) {
-		console.log('');
-		console.log('this');
-		console.log(this);
-		console.log(this.pos);
-		console.log(this.speed);
-		console.log('level');
-		console.log(level);
-		console.log(level.obstacleAt(this.position, this.size));
-		if (level.obstacleAt(this.position, this.size)) {
-			console.log('thistrue');
-			console.log(this);
-			// this.handleObstacle();
-		} else {
-			this.getNextPosition(time);
-			console.log('thisfalse');
-			console.log(this);
-		}
+	act () {
 	}
-	// act	(time, level) {
-	// 	console.log(this)
-	// 	// var data = this.getNextPosition(time);
-
-	// 	// if (level.obstacleAt(new Vector(data.x, data.y), this.size)) {
-	// 	// 	this.handleObstacle();
-	// 	// } else {
-	// 	// 	// var newPosition = this.getNextPosition(time);
-	// 	// 	this.pos.x = data.x;
-	// 	// 	this.pos.y = data.y;
-	// 	// }
-	// }
 }
 
 class HorizontalFireball extends Fireball {
@@ -334,16 +292,9 @@ class FireRain extends Fireball {
 	}
 }
 
-
-
-
-
-
-
 class Coin extends Actor {
 	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
 		super(pos, size, speed);
-		// this.type = "coin";
 		this.size = new Vector(0.6, 0.6);
 		this.pos.x += 0.2;
 		this.pos.y += 0.1;
@@ -365,10 +316,6 @@ class Coin extends Actor {
   		return newVec;
   	}
   	getNextPosition (time) {
-		// console.log('');
-		// console.log(this);
-		// console.log(this.pos);
-		// console.log(time);
   		if(time) {
   			this.spring += this.springSpeed * time;
   		} else {
@@ -376,36 +323,27 @@ class Coin extends Actor {
   		}
   		var qwe = new Vector(this.pos.x, this.pos.y + (this.getSpringVector().y));
   		qwe.x = this.pos.x;
-  		// console.log(this.getSpringVector().y);
   		qwe.y = this.pos.y + (this.getSpringVector().y);
-		// console.log(qwe);
   		this.pos.x = qwe.x;
   		this.pos.y = qwe.y;
   		return this.pos;
   	}
   	act () {
-		// console.log(this);
 		var asd = this.getNextPosition();
-		// console.log(asd);
   		this.pos.x = asd.x;
   		this.pos.y = asd.y;
-		// console.log(this);
   	}
 }
 
 class Player extends Actor {
 	constructor(pos = new Vector(0, 0)) {
 		super(pos);
-		// console.log(pos);
-		// this.type = "player";
 		this.size = new Vector(0.8, 1.5);
 		// this.size.x = 0.8;
 		// this.size.y = 1.5;
 		this.pos.y -= 0.5;
   	}
   	get type () {return 'player'}
-  	// get size () {return new Vector(0.8, 1.5);}
-  	// set type () {return 'player'}
 }
 
 
