@@ -24,7 +24,7 @@ const maxStep = 0.05;
 const wobbleSpeed = 8, wobbleDist = 0.07;
 const playerXSpeed = 7;
 const gravity = 30;
-const jumpSpeed = 17;
+const jumpSpeed = 13;
 
 function elt(name, className) {
   var elt = document.createElement(name);
