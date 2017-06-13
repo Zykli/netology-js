@@ -120,92 +120,85 @@ class Level {
 		if (position.x + size.x > this.width) {return 'wall'};
 		if (position.y + size.y > this.height) {return 'lava'};
 
-		return this.grid.map(function(row) {
-        	return row[Math.floor(position.x)];
-        }).find(function(cell, y) {
-        	if(((y == Math.floor(position.y)) || (y == Math.floor(position.y+size.y))) && (cell !== undefined)) {
-				return cell;
-        	}
-        });
+		// return this.grid.map(function(row, x) {
+  //       	return row[Math.floor(position.x)];
+  //       }).find(function(cell, y) {
+  //       	if(((y == Math.floor(position.y)) || (y == Math.floor(position.y+size.y - 0.01))) && (cell !== undefined)) {
+		// 		return cell;
+  //       	}
+  //       });
 
-		// for(var y=0; y<this.grid.length; y++) {
-		// 	for(var x =0; x<this.grid[y].length; x++) {
-		// 		//пересечение правой границей персонажа и лавы
-		// 		if (
-		// 			(x+1 == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y))
-		// 			&&
-		// 			this.grid[y][x+1] == 'lava'
-		// 			) {
-		// 			return this.grid[y][x+1]
-		// 		}
 
-		// 		//пересечение углов персонажа с припятствием
-		// 		if (
-		// 			(
-		// 				(
-		// 					x == Math.floor(position.x) && y == Math.floor(position.y)
-		// 				)
-		// 					||
-		// 				(
-		// 					x == Math.floor(position.x + size.x) && y == Math.floor(position.y)
-		// 				) 
-		// 					|| 
-		// 				(
-		// 					x == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y)
-		// 				)
-		// 					|| 
-		// 				(
-		// 					x == Math.floor(position.x) && y == Math.floor(position.y + size.y)
-		// 				)
-		// 			) 
-		// 				&& 
-		// 				this.grid[y][x] !== undefined
-		// 			) {
-		// 				return this.grid[y][x]
-		// 			}
-		// 			//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с правой стороны
-		// 			else if (
-		// 					(x+1 == Math.floor(position.x + size.x))
-		// 					 &&
-		// 					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
-		// 					&&
-		// 					this.grid[y][x+1] == 'wall'
-		// 			) {
-		// 				return this.grid[y][x+1]
-		// 			} 
-		// 			//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с левой стороны
-		// 			else if (
-		// 					(x-1 == Math.floor(position.x))
-		// 					 &&
-		// 					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
-		// 					&&
-		// 					this.grid[y][x-1] == 'wall'
-		// 				) {
-		// 				return this.grid[y][x-1]
-		// 			}
+  		for(var y=0; y<this.grid.length; y++) {
+			for(var x =0; x<this.grid[y].length; x++) {
+				//захождение правой границы персонажа на лаву
+				if (
+					(x+1 == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y))
+					&&
+					this.grid[y][x+1] == 'lava'
+					) {
+					return this.grid[y][x+1]
+				}
+				//пересечение углов персонажа с припятствием
+				if (
+						(
+						(
+							x == Math.floor(position.x) && y == Math.floor(position.y)
+						)
+							||
+						(
+							x == Math.floor(position.x + size.x) && y == Math.floor(position.y)
+						) 
+							|| 
+						(
+							x == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y - 0.01)
+						)
+							|| 
+						(
+							x == Math.floor(position.x) && y == Math.floor(position.y + size.y - 0.01)
+						)
+						) 
+						&& 
+						this.grid[y][x] !== undefined
+					) {
+						return this.grid[y][x]
+					}
+					//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с правой стороны
+				if (
+					(x+1 == Math.floor(position.x + size.x))
+					 &&
+					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
+					&&
+					this.grid[y][x+1] == 'wall'
+					) {
+						return this.grid[y][x+1]
+					} 
+					//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с левой стороны
+				if (
+					(x-1 == Math.floor(position.x))
+					 &&
+					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
+					&&
+					this.grid[y][x-1] == 'wall'
+					) {
+					return this.grid[y][x-1]
+					}
 
-		// 	}
-		// }
+			}
+		}
 	}
 	removeActor(obj) {
-		// console.log(this);
-			var findMass = [];
-			// this.actors.map(function(elem, i) {
-			// 	(elem.type == obj.type && elem.title == obj.title) ? findMass.push(i) : '';
-			// });
-			for (var i = 0; i < this.actors.length; i++) {
-				if (this.actors[i].type == obj.type && this.actors[i].title == obj.title) {
-					findMass.push(i);
-				}
-			}
-			for (var i = 0; i < findMass.length; i++) {
-				this.actors.splice(findMass[i], 1);
+			var deletingIndex = this.actors.indexOf(obj);
+			if(deletingIndex != -1) {
+				this.actors.splice(deletingIndex, 1);
 			}
 	}
 	noMoreActors(type) {
 		var find = 0;
 		if (!this.actors) {return true;}
-		this.actors.map(function (elem) {if (elem.type == type) {find++}});
+		this.actors.forEach(function(elem) {
+			if (elem.type == type) {find++};
+		});
 		if (find > 0) {return false;}
 		return true;
 	}
@@ -243,10 +236,10 @@ class LevelParser  {
 		if (plan.length != 0) {
 			plan.map(function(line, y) {
 				forReturn.push([]);
-				for (var x = 0; x < line.length; x++) {
-					if (line[x] == 'x') {
+				for (var elem of line) {
+					if (elem == 'x') {
 						forReturn[y].push('wall');
-					} else if (line[x] == '!') {
+					} else if (elem == '!') {
 						forReturn[y].push('lava');
 					} else {
 						forReturn[y].push(undefined);
@@ -343,7 +336,7 @@ class FireRain extends Fireball {
 		this.pos.y = this.startPosition.y;
 	}
 }
-var coinNumber = 1;
+
 class Coin extends Actor {
 	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
 		super(pos, size, speed);
@@ -353,8 +346,6 @@ class Coin extends Actor {
 		this.spring = Math.random() * (2 * Math.PI);
 		this.springSpeed = 8;
 		this.springDist = 0.07;
-		this.title = 'coin' + coinNumber;
-		coinNumber ++;
   	}
 	get type() {return 'coin'};
   	updateSpring(time) {
@@ -365,27 +356,16 @@ class Coin extends Actor {
   		}
   	}
   	getSpringVector() {
-  		var newVec = new Vector();
-  		newVec.y = Math.sin(this.spring) * this.springDist;
-  		return newVec;
+  		// var newVec = new Vector();
+  		// newVec.y = Math.sin(this.spring) * this.springDist;
+  		return new Vector(0, Math.sin(this.spring) * this.springDist);
   	}
   	getNextPosition(time) {
-  		if(time) {
-  			this.spring += this.springSpeed * time;
-  		} else {
-  			this.spring += this.springSpeed;
-  		}
-  		// var newPosition = new Vector(this.pos.x, this.pos.y + (this.getSpringVector().y));
-  		// newPosition.x = this.pos.x;
-  		// newPosition.y = this.pos.y + (this.getSpringVector().y);
-  		// this.pos.x = newPosition.x;
-  		// this.pos.y = newPosition.y;
-  		return new Vector(this.pos.x, this.pos.y + (this.getSpringVector().y));
+  		this.updateSpring(time);
+    	return this.pos.plus(this.getSpringVector());
   	}
-  	act() {
-		var newPosition = this.getNextPosition();
-  		this.pos.x = newPosition.x;
-  		this.pos.y = newPosition.y;
+  	act(time) {
+  		this.pos = this.getNextPosition(time);
   	}
 }
 
@@ -401,6 +381,17 @@ class Player extends Actor {
 
 
 const schemas = [
+  [
+    '   xxx   ',
+    '        o',
+    '         ',
+    'x       x',
+    'x   o   x',
+    'x   x   x',
+    '  x   x  ',
+    '    @    ',
+    '   xxx   '
+  ],
   [
     ' x       ',
     '         ',
