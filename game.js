@@ -1,21 +1,24 @@
 'use strict';
 function instanceofVector(value) {
-		try { 
-			if (value instanceof Vector) {
-				return value;
-			} else {
-				throw "объект не является вектором";
+		// try { 
+			if (!(value instanceof Vector)) {
+				throw fn();
 			}
-		} catch (Error) {alert(e)} ;
+				return value;
+		// } catch (Error) {alert(e)} ;
 };
 function instanceofActor(value) {
-		try { 
-			if (value instanceof Actor) {
-				return value;
-			} else {
-				throw "объект не является actor";
+		// try { 
+			if (!(value instanceof Actor)) {
+				throw fn();
 			}
-		} catch (Error) {alert(e)} ;
+				return value;
+			// if (value instanceof Actor) {
+			// 	return value;
+			// } else {
+			// 	throw "объект не является Actor";
+			// }
+		// } catch (Error) {alert(e)} ;
 };
 
 class Vector {
@@ -128,71 +131,91 @@ class Level {
   //       	}
   //       });
 
+// var qwe = this.grid.forEach(function(row, y) {
+// 	 row.forEach(function(cell, x) {
+// 		return 'wall'
+// 		// console.log(y);
+// 	});
+// });
+// console.log(qwe);
 
-  		for(var y=0; y<this.grid.length; y++) {
-			for(var x =0; x<this.grid[y].length; x++) {
-				//захождение правой границы персонажа на лаву
-				if (
-					(x+1 == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y))
-					&&
-					this.grid[y][x+1] == 'lava'
-					) {
-					return this.grid[y][x+1]
+
+		for(var y = Math.floor(position.y); y <= Math.floor(position.y + size.y); y++) {
+			for(var x = Math.floor(position.x); x <= Math.floor(position.x + size.x); x++) {
+				if( x+1 == Math.floor(position.x + size.x) && this.grid[y][x+1] == 'lava') {
+					return this.grid[y][x+1];
 				}
-				//пересечение углов персонажа с припятствием
-				if (
-						(
-						(
-							x == Math.floor(position.x) && y == Math.floor(position.y)
-						)
-							||
-						(
-							x == Math.floor(position.x + size.x) && y == Math.floor(position.y)
-						) 
-							|| 
-						(
-							x == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y - 0.01)
-						)
-							|| 
-						(
-							x == Math.floor(position.x) && y == Math.floor(position.y + size.y - 0.01)
-						)
-						) 
-						&& 
-						this.grid[y][x] !== undefined
-					) {
-						return this.grid[y][x]
-					}
-					//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с правой стороны
-				if (
-					(x+1 == Math.floor(position.x + size.x))
-					 &&
-					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
-					&&
-					this.grid[y][x+1] == 'wall'
-					) {
-						return this.grid[y][x+1]
-					} 
-					//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с левой стороны
-				if (
-					(x-1 == Math.floor(position.x))
-					 &&
-					(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
-					&&
-					this.grid[y][x-1] == 'wall'
-					) {
-					return this.grid[y][x-1]
-					}
-
+				if (this.grid[y][x] !== undefined) {
+					return this.grid[y][x];
+				}
 			}
 		}
+
+
+  // 		for(var y=0; y<this.grid.length; y++) {
+		// 	for(var x =0; x<this.grid[y].length; x++) {
+		// 		//захождение правой границы персонажа на лаву
+		// 		if (
+		// 			(x+1 == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y))
+		// 			&&
+		// 			this.grid[y][x+1] == 'lava'
+		// 			) {
+		// 			return this.grid[y][x+1]
+		// 		}
+		// 		//пересечение углов персонажа с припятствием
+		// 		if (
+		// 				(
+		// 				(
+		// 					x == Math.floor(position.x) && y == Math.floor(position.y)
+		// 				)
+		// 					||
+		// 				(
+		// 					x == Math.floor(position.x + size.x) && y == Math.floor(position.y)
+		// 				) 
+		// 					|| 
+		// 				(
+		// 					x == Math.floor(position.x + size.x) && y == Math.floor(position.y + size.y - 0.01)
+		// 				)
+		// 					|| 
+		// 				(
+		// 					x == Math.floor(position.x) && y == Math.floor(position.y + size.y - 0.01)
+		// 				)
+		// 				) 
+		// 				&& 
+		// 				this.grid[y][x] !== undefined
+		// 			) {
+		// 				return this.grid[y][x]
+		// 			}
+		// 			//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с правой стороны
+		// 		if (
+		// 			(x+1 == Math.floor(position.x + size.x))
+		// 			 &&
+		// 			(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
+		// 			&&
+		// 			this.grid[y][x+1] == 'wall'
+		// 			) {
+		// 				return this.grid[y][x+1]
+		// 			} 
+		// 			//если персонаж не допрыгнул, то что бы он не повис на "голове" сквозь блок с левой стороны
+		// 		if (
+		// 			(x-1 == Math.floor(position.x))
+		// 			 &&
+		// 			(y > Math.floor(position.y) && y < Math.floor(position.y+size.y))
+		// 			&&
+		// 			this.grid[y][x-1] == 'wall'
+		// 			) {
+		// 			return this.grid[y][x-1]
+		// 			}
+
+		// 	}
+		// }
 	}
 	removeActor(obj) {
 			var deletingIndex = this.actors.indexOf(obj);
 			if(deletingIndex != -1) {
 				this.actors.splice(deletingIndex, 1);
 			}
-	}
+		}
 	noMoreActors(type) {
 		var find = 0;
 		if (!this.actors) {return true;}
@@ -363,10 +386,26 @@ class Coin extends Actor {
   	getNextPosition(time) {
   		this.updateSpring(time);
     	return this.pos.plus(this.getSpringVector());
+  		// if(time) {
+  		// 	this.spring += this.springSpeed * time;
+  		// } else {
+  		// 	this.spring += this.springSpeed;
+  		// }
+  		// // var newPosition = new Vector(this.pos.x, this.pos.y + (this.getSpringVector().y));
+  		// // newPosition.x = this.pos.x;
+  		// // newPosition.y = this.pos.y + (this.getSpringVector().y);
+  		// // this.pos.x = newPosition.x;
+  		// // this.pos.y = newPosition.y;
+  		return new Vector(this.pos.x, this.pos.y + this.getSpringVector().y);
   	}
   	act(time) {
   		this.pos = this.getNextPosition(time);
   	}
+  // 	act() {
+		// var newPosition = this.getNextPosition();
+  // 		this.pos.x = newPosition.x;
+  // 		this.pos.y = newPosition.y;
+  // 	}
 }
 
 class Player extends Actor {
@@ -381,17 +420,17 @@ class Player extends Actor {
 
 
 const schemas = [
-  [
-    '   xxx   ',
-    '        o',
-    '         ',
-    'x       x',
-    'x   o   x',
-    'x   x   x',
-    '  x   x  ',
-    '    @    ',
-    '   xxx   '
-  ],
+  // [
+  //   '   xxx   ',
+  //   '        o',
+  //   '         ',
+  //   'x       x',
+  //   'x   o   x',
+  //   'x   x   x',
+  //   '  x   x  ',
+  //   '    @    ',
+  //   '   xxx   '
+  // ],
   [
     ' x       ',
     '         ',
