@@ -1,17 +1,10 @@
 'use strict';
-function instanceofVector(value) {
-			if (!(value instanceof Vector)) {
-				throw fn();
-			} else {
-				return value;
-			}
-};
-function instanceofActor(value) {
-			if (!(value instanceof Actor)) {
-				throw fn();
-			} else{
-				return value;
-			}
+function instanceofChecked(value, checkedClass) {
+		if (!(value instanceof checkedClass)) {
+			throw new Error(`переданный объект не является объектом типа ${checkedClass.name}`);
+		} else {
+			return value;
+		}
 };
 
 class Vector {
@@ -20,7 +13,7 @@ class Vector {
 		this.y = y;
   	}
  	plus(elem) {
- 		instanceofVector(elem);
+ 		instanceofChecked(elem, Vector);
  		return new Vector(this.x+elem.x, this.y+elem.y);
  	}
  	times(z) {
@@ -30,11 +23,11 @@ class Vector {
 
 class Actor {
 	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
-		var position = instanceofVector(pos);
-		var sizeFinal = instanceofVector(size);
+		var position = instanceofChecked(pos, Vector);
+		var sizeFinal = instanceofChecked(size, Vector);
 		this.pos = position;
 		this.size = sizeFinal;
-		this.speed = instanceofVector(speed);
+		this.speed = instanceofChecked(speed, Vector);
 		this.startPosition = new Vector(pos.x, pos.y);
   	}
 	get type() {return 'actor'};
@@ -93,7 +86,7 @@ class Level {
 		return false;
 	}
 	actorAt(obj) {
-		instanceofActor(obj);
+		instanceofChecked(obj, Actor);
 		// Вернет объект игрового поля, который пересекается с переданным объектом
 		if (this.actors) {
 			return this.actors.find(function(item) {
@@ -264,7 +257,6 @@ class HorizontalFireball extends Fireball {
 class VerticalFireball extends Fireball {
 	constructor(pos) {
 		super(pos);
-		ершы
 		this.speed = new Vector(0, 2);
 	}
 }
@@ -327,8 +319,8 @@ const schemas = [
     '    v   o',
     '         ',
     'x       x',
-    'x   o   x',
-    'x   x = x',
+    'x o   = x',
+    'x   x   x',
     '  x   x  ',
     '    @    ',
     '   xxx   '
