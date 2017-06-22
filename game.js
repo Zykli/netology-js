@@ -273,49 +273,49 @@ class FireRain extends Fireball {
 }
 
 class Coin extends Actor {
-	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
-		super(pos, size, speed);
-		this.size = new Vector(0.6, 0.6);
-		this.pos.x += 0.2;
-		this.pos.y += 0.1;
-		this.spring = Math.random() * (2 * Math.PI);
-		this.springSpeed = 8;
-		this.springDist = 0.07;
-		Object.defineProperty(this, "realPosition", {
-		  value: this.pos,
-		  writable: false, // запретить присвоение "user.name="
-		  configurable: false // запретить удаление "delete user.name"
-		});
-  	}
-	get type() {return 'coin'};
-  	updateSpring(time) {
-  		if(time) {
-  			this.spring += this.springSpeed * time;
-  		} else {
-  			this.spring += this.springSpeed;
-  		}
-  	}
-  	getSpringVector() {
-  		return new Vector(0, Math.sin(this.spring) * this.springDist);
-  	}
-  	getNextPosition(time = 1) {
-  		this.updateSpring(time);
-  		console.log(this.realPosition);
-  		console.log(this.pos);
-    	return this.realPosition.plus(this.getSpringVector());
-  	}
-  	act(time) {
-  		this.pos = this.getNextPosition(time);
-  	}
+  constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
+	super(pos, size, speed);
+	this.size = new Vector(0.6, 0.6);
+	this.pos.x += 0.2;
+	this.pos.y += 0.1;
+	this.spring = Math.random() * (2 * Math.PI);
+	this.springSpeed = 8;
+	this.springDist = 0.07;
+	Object.defineProperty(this, "basePosition", {
+	  value: this.pos,
+	  writable: false, // запретить присвоение "user.name="
+	  configurable: false // запретить удаление "delete user.name"
+	});
+	}
+  get type() {return 'coin'};
+  updateSpring(time) {
+	if(time) {
+	  this.spring += this.springSpeed * time;
+	} else {
+	  this.spring += this.springSpeed;
+	}
+  }
+  getSpringVector() {
+	return new Vector(0, Math.sin(this.spring) * this.springDist);
+  }
+  getNextPosition(time = 1) {
+	this.updateSpring(time);
+	console.log(this.basePosition);
+	console.log(this.pos);
+    return this.basePosition.plus(this.getSpringVector());
+  }
+  act(time) {
+	this.pos = this.getNextPosition(time);
+  }
 }
 
 class Player extends Actor {
-	constructor(pos = new Vector(0, 0)) {
-		super(pos);
-		this.size = new Vector(0.8, 1.5);
-		this.pos.y -= 0.5;
-  	}
-  	get type() {return 'player'}
+  constructor(pos = new Vector(0, 0)) {
+    super(pos);
+    this.size = new Vector(0.8, 1.5);
+    this.pos.y -= 0.5;
+  }
+  get type() {return 'player'}
 }
 
 
@@ -326,8 +326,8 @@ const schemas = [
     '    v    ',
     '         ',
     'x       x',
-    'x o   = x',
-    'x   x   x',
+    'x     = x',
+    'x o x   x',
     '  x   x  ',
     '    @    ',
     '   xxx   '
