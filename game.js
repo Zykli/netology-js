@@ -306,7 +306,7 @@ class Player extends Actor {
 	constructor(pos = new Vector(0, 0)) {
 		super(pos);
 		this.size = new Vector(0.8, 1.5);
-		this.pos.y -= 0.5;
+		this.pos = this.pos.plus(new Vector(0, -0.5));
 	}
 	get type() {return 'player'}
 }
