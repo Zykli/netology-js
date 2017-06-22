@@ -1,10 +1,10 @@
 'use strict';
 function instanceofChecked(value, checkedClass) {
-		if (!(value instanceof checkedClass)) {
-			throw new Error(`переданный объект не является объектом типа ${checkedClass.name}`);
-		} else {
-			return value;
-		}
+	if (!(value instanceof checkedClass)) {
+		throw new Error(`переданный объект не является объектом типа ${checkedClass.name}`);
+	} else {
+		return value;
+	}
 };
 
 class Vector {
