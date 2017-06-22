@@ -281,11 +281,8 @@ class Coin extends Actor {
 	this.spring = Math.random() * (2 * Math.PI);
 	this.springSpeed = 8;
 	this.springDist = 0.07;
-	Object.defineProperty(this, "basePosition", {
-	  value: this.pos,
-	  writable: false, // запретить присвоение "user.name="
-	  configurable: false // запретить удаление "delete user.name"
-	});
+	this.basePosition = new Vector(this.pos.x, this.pos.y);
+	console.log(this.basePosition);
 	}
   get type() {return 'coin'};
   updateSpring(time) {
@@ -300,8 +297,9 @@ class Coin extends Actor {
   }
   getNextPosition(time = 1) {
 	this.updateSpring(time);
-	console.log(this.basePosition);
 	console.log(this.pos);
+	console.log(this.basePosition);
+
     return this.basePosition.plus(this.getSpringVector());
   }
   act(time) {
