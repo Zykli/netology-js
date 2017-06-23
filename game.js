@@ -109,9 +109,9 @@ class Level {
 		if (position.x + size.x > this.width) {return 'wall'};
 		if (position.y + size.y > this.height) {return 'lava'};
 		var posy = Math.floor(position.y),
-			posySizey = Math.floor(position.y + size.y),
+			posySizey = (position.y + size.y),
 			posx = Math.floor(position.x),
-			posxSizex = Math.floor(position.x + size.x);
+			posxSizex = (position.x + size.x);
 		for(var y = posy; y <= posySizey; y++) {
 			for(var x = posx; x <= posxSizex; x++) {
 				//пересечение правой стороной персонажа лавы
@@ -119,7 +119,7 @@ class Level {
 					return this.grid[y][x+1];
 				}
 				//текущая позиция персонажа
-				if (this.grid[y][x] !== undefined) {
+				if (y < posySizey && x < posxSizex && this.grid[y][x] !== undefined) {
 					return this.grid[y][x];
 				}
 			}
@@ -319,13 +319,13 @@ class Player extends Actor {
 const schemas = [
   [
     '   xxx   ',
-    '    v    ',
+    '         ',
     '         ',
     'x       x',
-    'x     = x',
+    'x   @   x',
     'x o x   x',
     '  x   x  ',
-    '    @    ',
+    '         ',
     '   xxx   '
   ],
   [
