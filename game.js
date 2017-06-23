@@ -68,8 +68,8 @@ class Level {
 	  	  });
 	  	}
 	  	if (actors instanceof Array) {
-	  		actors.forEach(function(elem) {
-	  			elem.type === 'player' ? player = elem : "";
+	  		player = actors.find(function(elem) {
+	  			if(elem.type === 'player') {return elem}
 	  		});
 	  	}
 	  	this.grid = grid;
@@ -108,11 +108,14 @@ class Level {
 		if (position.x < 0 || position.y < 0) {return 'wall'};
 		if (position.x + size.x > this.width) {return 'wall'};
 		if (position.y + size.y > this.height) {return 'lava'};
-
-		for(var y = Math.floor(position.y); y <= Math.floor(position.y + size.y); y++) {
-			for(var x = Math.floor(position.x); x <= Math.floor(position.x + size.x); x++) {
+		var posy = Math.floor(position.y),
+			posySizey = Math.floor(position.y + size.y),
+			posx = Math.floor(position.x),
+			posxSizex = Math.floor(position.x + size.x);
+		for(var y = posy; y <= posySizey; y++) {
+			for(var x = posx; x <= posxSizex; x++) {
 				//пересечение правой стороной персонажа лавы
-				if(x+1 == Math.floor(position.x + size.x) && this.grid[y][x+1] == 'lava') {
+				if(x+1 == posxSizex && this.grid[y][x+1] == 'lava') {
 					return this.grid[y][x+1];
 				}
 				//текущая позиция персонажа
